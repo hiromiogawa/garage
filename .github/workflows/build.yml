@@ -1,0 +1,49 @@
+name: Building
+
+on:
+  pull_request:
+    branches-ignore:
+      - staging*
+      - preview*
+      - production*
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+      - uses: actions/checkout@v4
+
+      - name: Read .tool-versions
+        uses: marocchino/tool-versions-action@v1
+        id: asdf
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.asdf.outputs.nodejs }}
+          cache: yarn
+
+      - name: Check Cache
+        uses: actions/cache@v4
+        id: node-modules-cache
+        with:
+          path: '**/node_modules'
+          key: node-${{ steps.asdf.outputs.nodejs }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Set up node modules
+        shell: bash
+        run: |
+          if [ "${{ steps.node-modules-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "skip yarn install"
+          else
+            yarn install --non-interactive --frozen-lockfile
+          fi
+      - name: Prisma generate
+        run: yarn prisma:gen
+
+      - name: Build
+        run: yarn build
