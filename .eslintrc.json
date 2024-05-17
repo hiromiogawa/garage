@@ -14,9 +14,16 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
+    "plugin:jsdoc/recommended",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint", "import", "unused-imports"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "unused-imports",
+    "prefer-arrow",
+    "jsdoc"
+  ],
   "rules": {
     "import/order": [
       "error",
@@ -36,11 +43,50 @@
         }
       }
     ],
+    "prefer-arrow/prefer-arrow-functions": [
+      "warn",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ],
     "import/no-duplicates": "warn",
     "unused-imports/no-unused-imports": "warn",
     "@typescript-eslint/interface-name-prefix": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "no-console": "warn"
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "warn",
+    "no-console": "warn",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "typeAlias",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "variable",
+        "format": ["camelCase"]
+      }
+    ],
+    "@typescript-eslint/array-type": "warn",
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+    "@typescript-eslint/consistent-type-exports": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+    "no-magic-numbers": "warn",
+    "jsdoc/require-jsdoc": [
+      "error",
+      {
+        "publicOnly": true,
+        "require": {
+          "ArrowFunctionExpression": true,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": true,
+          "MethodDefinition": true
+        }
+      }
+    ]
   }
 }
