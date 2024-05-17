@@ -1,0 +1,33 @@
+{
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "editor.detectIndentation": false,
+  "typescript.validate.enable": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "jestrunner.jestCommand": "yarn run test:api:separately",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#008000",
+    "activityBar.background": "#008000",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#bc12cd",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#008000",
+    "statusBar.background": "#008000",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#008000",
+    "statusBarItem.remoteBackground": "#008000",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#008000",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#008000",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" }
+}
