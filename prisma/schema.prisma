@@ -1,0 +1,492 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// メンテナンス頻度
+enum Frequency {
+  week1
+  week2
+  week3
+  week4
+  month1
+  month2
+  month3
+  month4
+  month5
+  month6
+  month7
+  month8
+  month9
+  month10
+  month11
+  year1
+  year2
+  year3
+  year4
+  year5
+}
+
+// 自動車メーカー名
+enum MakerName {
+  TOYOTA
+  LEXUS
+  NISSAN
+  HONDA
+  MAZDA
+  SUBARU
+  MITSUBISHI
+  SUZUKI
+  DAIHATSU
+  ATHER
+}
+
+// ブレーキオイル粘度
+enum Dot {
+  DOT3
+  DOT4
+  DOT5
+}
+
+// ユーザー
+model User {
+  id           BigInt   @id @default(autoincrement())
+  name         String
+  email        String
+  isEnabled    Boolean  @default(false)
+  refreshAoken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  MyCars       MyCar[]
+}
+
+// 自動車メーカー
+model Maker {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  isEnabled Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Cars      Car[]
+}
+
+// 車種
+model Car {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  makerId   BigInt
+  isEnabled Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  MyCars    MyCar[]
+  Maker     Maker    @relation(fields: [makerId], references: [id])
+}
+
+// ユーザーの自動車
+model MyCar {
+  id                         BigInt                      @id @default(autoincrement())
+  userId                     BigInt
+  mycarId                    BigInt
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  User                       User                        @relation(fields: [userId], references: [id])
+  Car                        Car                         @relation(fields: [mycarId], references: [id])
+  MaintenanceItemActivations MaintenanceItemActivation[]
+  NoticeFrequencies          NoticeFrequency[]
+  EngineOils                 EngineOil[]
+  OilFilters                 OilFilter[]
+  DifferentialGearOils       DifferentialGearOil[]
+  MtOils                     MtOil[]
+  BrakeFluids                BrakeFluid[]
+  BrakePads                  BrakePad[]
+  DiskBrakes                 DiskBrake[]
+  LLCs                       LLC[]
+  AirConditionerFilters      AirConditionerFilter[]
+  AirConditionerGases        AirConditionerGas[]
+  AirCleaners                AirCleaner[]
+  Tires                      Tire[]
+  TirePressures              TirePressure[]
+  Batteries                  Battery[]
+  PowerSteeringOils          PowerSteeringOil[]
+  SparkPlugs                 SparkPlug[]
+  Coatings                   Coating[]
+  Waxes                      Wax[]
+  Washes                     Wash[]
+}
+
+// メンテナンス機能を使用する
+model MaintenanceItemActivation {
+  id                   BigInt   @id @default(autoincrement())
+  mycarId              BigInt
+  engineOil            Boolean  @default(true)
+  oilFilter            Boolean  @default(true)
+  differentialGearOil  Boolean  @default(false)
+  mtOil                Boolean  @default(false)
+  brakeFluid           Boolean  @default(false)
+  brakePad             Boolean  @default(false)
+  diskBrake            Boolean  @default(false)
+  llc                  Boolean  @default(false)
+  airConditionerFilter Boolean  @default(false)
+  airConditionerGas    Boolean  @default(false)
+  airCleaner           Boolean  @default(false)
+  tire                 Boolean  @default(true)
+  tirePressure         Boolean  @default(true)
+  battery              Boolean  @default(true)
+  powerSteeringOil     Boolean  @default(false)
+  sparkPlug            Boolean  @default(false)
+  coating              Boolean  @default(false)
+  wax                  Boolean  @default(false)
+  wash                 Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// メンテナンス頻度管理
+model NoticeFrequency {
+  id                   BigInt    @id @default(autoincrement())
+  mycarId              BigInt
+  engineOil            Frequency @default(month3)
+  oilFilter            Frequency @default(month6)
+  differentialGearOil  Frequency @default(year2)
+  mtOil                Frequency @default(year2)
+  brakeFluid           Frequency @default(year2)
+  brakePad             Frequency @default(year5)
+  diskBrake            Frequency @default(year5)
+  llc                  Frequency @default(year2)
+  airConditionerFilter Frequency @default(year1)
+  airConditionerGus    Frequency @default(year5)
+  airCleaner           Frequency @default(year2)
+  tire                 Frequency @default(year4)
+  tirePressure         Frequency @default(month1)
+  battery              Frequency @default(year2)
+  powerSteering_oil    Frequency @default(year2)
+  sparkPlug            Frequency @default(year5)
+  coating              Frequency @default(year1)
+  wax                  Frequency @default(month2)
+  wash                 Frequency @default(week1)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// エンジンオイル
+model EngineOil {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  viscosity          String?
+  liter              Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// エンジンオイルフィルター
+model OilFilter {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+model DifferentialGearOil {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  viscosity          String?
+  liter              Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// ミッションオイル/オートマオイル
+model MtOil {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  viscosity          String?
+  liter              Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// ブレーキオイル
+model BrakeFluid {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  dot                Dot?
+  liter              Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// ブレーキパッド
+model BrakePad {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// ディスクブレーキ
+model DiskBrake {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// 冷却水
+model LLC {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  liter              Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// エアコンフィルター
+model AirConditionerFilter {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// エアコンガス
+model AirConditionerGas {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// エアクリーナー
+model AirCleaner {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// タイヤ
+model Tire {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  size               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// タイヤ空気圧
+model TirePressure {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  pressureLf         Int?
+  pressureLr         Int?
+  pressureRf         Int?
+  pressureRr         Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// バッテリー
+model Battery {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// パワステオイル
+model PowerSteeringOil {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  liter              Int?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// スパークプラグ
+model SparkPlug {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// コーティング
+model Coating {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  maker              String?
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// ワックス
+model Wax {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  name               String?
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}
+
+// 洗車
+model Wash {
+  id                 BigInt   @id @default(autoincrement())
+  mycarId            BigInt
+  implementationDate DateTime
+  shopName           String?
+  price              Int?
+  mileage            Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  MyCar MyCar @relation(fields: [mycarId], references: [id])
+}

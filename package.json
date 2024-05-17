@@ -19,12 +19,21 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "commit": "git-cz",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prisma:gen": "./node_modules/.bin/dotenv -e .env.development -- prisma generate",
+    "prisma:seed": "./node_modules/.bin/dotenv -e .env.development -- prisma db seed",
+    "migrate": "./node_modules/.bin/dotenv -e .env.development -- prisma migrate deploy",
+    "migrate:dev": "./node_modules/.bin/dotenv -e .env.development -- prisma migrate dev",
+    "migrate:reset": "./node_modules/.bin/dotenv -e .env.development -- prisma migrate reset",
+    "migrate:test": "./node_modules/.bin/dotenv -e .env.test -- prisma migrate deploy"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@prisma/client": "5.12.1",
+    "prisma": "^5.12.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },
@@ -38,6 +47,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "dotenv-cli": "^7.4.1",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
