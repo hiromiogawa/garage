@@ -65,7 +65,7 @@
       },
       {
         "selector": "variable",
-        "format": ["camelCase"]
+        "format": ["camelCase", "UPPER_CASE"]
       }
     ],
     "@typescript-eslint/array-type": "warn",
@@ -87,6 +87,8 @@
           "MethodDefinition": true
         }
       }
-    ]
+    ],
+    "jsdoc/require-returns-type": "off",
+    "jsdoc/require-param-type": "off"
   }
 }

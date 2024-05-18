@@ -1,11 +1,11 @@
 -- CreateEnum
-CREATE TYPE "Frequency" AS ENUM ('week1', 'week2', 'week3', 'week4', 'month1', 'month2', 'month3', 'month4', 'month5', 'month6', 'month7', 'month8', 'month9', 'month10', 'month11', 'year1', 'year2', 'year3', 'year4', 'year5');
+CREATE TYPE "FREQUENCY" AS ENUM ('week1', 'week2', 'week3', 'week4', 'month1', 'month2', 'month3', 'month4', 'month5', 'month6', 'month7', 'month8', 'month9', 'month10', 'month11', 'year1', 'year2', 'year3', 'year4', 'year5');
 
 -- CreateEnum
-CREATE TYPE "MakerName" AS ENUM ('TOYOTA', 'LEXUS', 'NISSAN', 'HONDA', 'MAZDA', 'SUBARU', 'MITSUBISHI', 'SUZUKI', 'DAIHATSU', 'ATHER');
+CREATE TYPE "MAKER_NAME" AS ENUM ('TOYOTA', 'LEXUS', 'NISSAN', 'HONDA', 'MAZDA', 'SUBARU', 'MITSUBISHI', 'SUZUKI', 'DAIHATSU', 'ATHER');
 
 -- CreateEnum
-CREATE TYPE "Dot" AS ENUM ('DOT3', 'DOT4', 'DOT5');
+CREATE TYPE "DOT" AS ENUM ('DOT3', 'DOT4', 'DOT5');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -23,7 +23,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Maker" (
     "id" BIGSERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" "MAKER_NAME" NOT NULL,
     "isEnabled" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -87,25 +87,25 @@ CREATE TABLE "MaintenanceItemActivation" (
 CREATE TABLE "NoticeFrequency" (
     "id" BIGSERIAL NOT NULL,
     "mycarId" BIGINT NOT NULL,
-    "engineOil" "Frequency" NOT NULL DEFAULT 'month3',
-    "oilFilter" "Frequency" NOT NULL DEFAULT 'month6',
-    "differentialGearOil" "Frequency" NOT NULL DEFAULT 'year2',
-    "mtOil" "Frequency" NOT NULL DEFAULT 'year2',
-    "brakeFluid" "Frequency" NOT NULL DEFAULT 'year2',
-    "brakePad" "Frequency" NOT NULL DEFAULT 'year5',
-    "diskBrake" "Frequency" NOT NULL DEFAULT 'year5',
-    "llc" "Frequency" NOT NULL DEFAULT 'year2',
-    "airConditionerFilter" "Frequency" NOT NULL DEFAULT 'year1',
-    "airConditionerGus" "Frequency" NOT NULL DEFAULT 'year5',
-    "airCleaner" "Frequency" NOT NULL DEFAULT 'year2',
-    "tire" "Frequency" NOT NULL DEFAULT 'year4',
-    "tirePressure" "Frequency" NOT NULL DEFAULT 'month1',
-    "battery" "Frequency" NOT NULL DEFAULT 'year2',
-    "powerSteering_oil" "Frequency" NOT NULL DEFAULT 'year2',
-    "sparkPlug" "Frequency" NOT NULL DEFAULT 'year5',
-    "coating" "Frequency" NOT NULL DEFAULT 'year1',
-    "wax" "Frequency" NOT NULL DEFAULT 'month2',
-    "wash" "Frequency" NOT NULL DEFAULT 'week1',
+    "engineOil" "FREQUENCY" NOT NULL DEFAULT 'month3',
+    "oilFilter" "FREQUENCY" NOT NULL DEFAULT 'month6',
+    "differentialGearOil" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "mtOil" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "brakeFluid" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "brakePad" "FREQUENCY" NOT NULL DEFAULT 'year5',
+    "diskBrake" "FREQUENCY" NOT NULL DEFAULT 'year5',
+    "llc" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "airConditionerFilter" "FREQUENCY" NOT NULL DEFAULT 'year1',
+    "airConditionerGus" "FREQUENCY" NOT NULL DEFAULT 'year5',
+    "airCleaner" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "tire" "FREQUENCY" NOT NULL DEFAULT 'year4',
+    "tirePressure" "FREQUENCY" NOT NULL DEFAULT 'month1',
+    "battery" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "powerSteering_oil" "FREQUENCY" NOT NULL DEFAULT 'year2',
+    "sparkPlug" "FREQUENCY" NOT NULL DEFAULT 'year5',
+    "coating" "FREQUENCY" NOT NULL DEFAULT 'year1',
+    "wax" "FREQUENCY" NOT NULL DEFAULT 'month2',
+    "wash" "FREQUENCY" NOT NULL DEFAULT 'week1',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -188,7 +188,7 @@ CREATE TABLE "BrakeFluid" (
     "mycarId" BIGINT NOT NULL,
     "maker" TEXT,
     "name" TEXT,
-    "dot" "Dot",
+    "dot" "DOT",
     "liter" INTEGER,
     "implementationDate" TIMESTAMP(3) NOT NULL,
     "shopName" TEXT,
