@@ -25,7 +25,8 @@
     "migrate": "./node_modules/.bin/dotenv -e .env.development -- prisma migrate deploy",
     "migrate:dev": "./node_modules/.bin/dotenv -e .env.development -- prisma migrate dev",
     "migrate:reset": "./node_modules/.bin/dotenv -e .env.development -- prisma migrate reset",
-    "migrate:test": "./node_modules/.bin/dotenv -e .env.test -- prisma migrate deploy"
+    "migrate:test": "./node_modules/.bin/dotenv -e .env.test -- prisma migrate deploy",
+    "static:gen": "scripts/generate-prisma-enum-variables.sh && prettier --write \"src/util/statics/prisma-enum-variables.ts\""
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
